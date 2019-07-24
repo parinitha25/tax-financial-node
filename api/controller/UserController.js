@@ -30,6 +30,7 @@ exports.getUser = function(req, res){
 
 
 exports.userSignup = function(req, res){
+  // console.log("hi signup")
   const reg_email=/^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/;
   const reg_mob=/^[0]?[789]\d{9}$/;
   const reg_pwd=/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
