@@ -5,8 +5,7 @@ var fs = require("fs");
 
 //get all users
 exports.getAllUsers = function(req, res) {
- 
-  console.log(req.body);
+ console.log(req.body);
   UserData.find({}, function(err, data) {
     if (err)
       res.send(err);
@@ -30,7 +29,7 @@ exports.getUser = function(req, res){
 
 
 exports.userSignup = function(req, res){
-  // console.log("hi signup")
+  console.log("hi signup")
   const reg_email=/^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/;
   const reg_mob=/^[0]?[789]\d{9}$/;
   const reg_pwd=/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
@@ -70,7 +69,7 @@ exports.userSignup = function(req, res){
 
 exports.userSignin = function(req,res){
   UserData.find({Email: req.body.Email}, function(err, data){
-    if(data != null && data != ''){
+    if(data!= null && data != ''){
       bcrypt.compare(req.body.Password, data[0].Password, function( err, isMatch) {
         if(isMatch == true){
           res.send("User succesfully signIn");

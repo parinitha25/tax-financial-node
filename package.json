@@ -9,6 +9,7 @@
   "author": "Chiru",
   "license": "ISC",
   "dependencies": {
+    "ack-angular-mobiscroll": "^1.0.3",
     "babel-cli": "^6.26.0",
     "babel-register": "^6.26.0",
     "bcrypt": "^3.0.6",

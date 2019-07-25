@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/Users');
+mongoose.connect('mongodb://localhost/tax-financial');
 
 UserData = require('./api/models/userModel'); 
 
