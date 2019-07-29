@@ -23,3 +23,6 @@ module.exports = function(app) {
  app.route('/signin')
  .post(userData.userSignin);
 };
+
+app.post('/rst',AdminController.restaurants);
+app.get('/getbyRstId/:_id',AdminController.getRstID);
