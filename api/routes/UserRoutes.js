@@ -5,8 +5,6 @@ module.exports = function(app) {
  app.route('/signup')
  .post(userData.userSignup);
 
-
-
  //user detail
  app.route('/getUser/:emailId')
  .get(userData.getUser);
@@ -15,14 +13,11 @@ module.exports = function(app) {
  app.route('/updateUser')
  .put(userData.updateUser);
 
-// 
-//  app.route('/deleteUser/:userId')
-//  .delete(userData.deleteUser);
-
  //Sign
  app.route('/signin')
  .post(userData.userSignin);
-};
 
-app.post('/rst',AdminController.restaurants);
-app.get('/getbyRstId/:_id',AdminController.getRstID);
+
+app.route('/appt')
+.post(userData.Appointments);
+};

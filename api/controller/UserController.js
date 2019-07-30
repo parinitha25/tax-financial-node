@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
 UserData = mongoose.model('UserInfo');
 var bcrypt = require('bcryptjs');
 var fs = require("fs");
+UserAppointment =mongoose.model('appointment');
 
 //get all users
 exports.getAllUsers = function(req, res) {
@@ -16,7 +17,6 @@ exports.getAllUsers = function(req, res) {
 
 
 exports.getUser = function(req, res){
-
   console.log(req.params.emailId);    
   UserData.find({email: req.params.emailId},
     function(err, data){
@@ -91,6 +91,18 @@ exports.updateUser = function(req, res) {
     });
 };
 
+var mongoose=require('mongoose');
+UserAppointment =mongoose.model('appointment');
+
+exports.Appointments = function(req, res){
+ console.log("hi signup")
+ var userAppointment = new UserAppointment(req.body);
+ userAppointment.save(function(err, data){
+    if(err)
+      res.send(err.message);
+    res.json(data);
+ })
+}
 
 
 
