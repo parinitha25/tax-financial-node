@@ -2,7 +2,14 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-  
+  FirstName:{
+    type:String,
+    required:'please Enter valid name'
+  },
+  LastName:{
+    type:String,
+    required:'please Enter valid name'
+  },
   Email: {
     type: String,
     required: 'Please Enter valid emailId'
@@ -17,7 +24,7 @@ var UserSchema = new Schema({
   }, 
   Created_date: {
     type: Date,
-    default: Date.now
+    // default: Date.now
   }
 });
 
@@ -34,8 +41,6 @@ var appointmentSchema=new Schema({
   },
   date:{
       type:Date,
-      default: Date.now,
-
       required: 'date required'
   },
   time:{

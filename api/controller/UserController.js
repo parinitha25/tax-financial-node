@@ -31,14 +31,14 @@ exports.getUser = function(req, res){
 exports.userSignup = function(req, res){
   console.log("hi signup")
   const reg_email=/^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/;
-  const reg_mob=/^[0]?[789]\d{9}$/;
+  // const reg_mob=/^[0]?[789]\d{9}$/;
   const reg_pwd=/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
   if(!reg_pwd.test(req.body.Password)){
     res.send('password is invalid');
   }
-  if(!reg_mob.test(req.body.Phone)){
-    res.send('Mobile number is invalid');
-  }
+  // if(!reg_mob.test(req.body.Phone)){
+  //   res.send('Mobile number is invalid');
+  // }
   if(reg_email.test(req.body.Email)){
     console.log(req.body);
     UserData.find({Email: req.body.Email},function(err, data){
@@ -81,7 +81,24 @@ exports.userSignin = function(req,res){
     }
   });
 };
-
+exports.userSigning = function(req,res){
+  UserData.find({Email: req.body.Email}, function(err, data){
+    if(data!= null && data != ''){
+      // bcrypt.compare(req.body.Password, data[0].Password, function( err, isMatch) {
+      //   if(isMatch == true){
+      //     res.send("User succesfully signIn");
+      //   }
+      // });
+      if(err){
+      res.send("User succesfully signIn");
+      res.json(data);
+    }
+  } 
+    else{
+      res.send("User does not exists");
+    }
+  });
+};
 exports.updateUser = function(req, res) {
   UserData.findOneAndUpdate({_id: req.body.userId}, 
     req.body, {new: true}, function(err, data) {
@@ -91,8 +108,9 @@ exports.updateUser = function(req, res) {
     });
 };
 
-var mongoose=require('mongoose');
-UserAppointment =mongoose.model('appointment');
+
+// var mongoose=require('mongoose');
+// UserAppointment =mongoose.model('appointment');
 
 exports.Appointments = function(req, res){
  console.log("hi signup")
@@ -100,9 +118,19 @@ exports.Appointments = function(req, res){
  userAppointment.save(function(err, data){
     if(err)
       res.send(err.message);
-    res.json(data);
+      res.json(data);
  })
 }
+
+exports.getAllAppointment = function(req, res) {
+  console.log("hello")
+  UserAppointment.find( function(err, data) {
+     if (err)
+       res.send(err);
+     res.json(data);
+    
+   });
+ };
 
 
 
