@@ -16,11 +16,14 @@ module.exports = function(app) {
  //Sign
  app.route('/signin')
  .post(userData.userSignin)
- .post(userData.userSigning)
+
 
 
 
 app.route('/appt')
 .post(userData.Appointments)
 .get(userData.getAllAppointment)
+
+app.route('/edit')
+.post(userData.getAllAppointmentedit)
 };

@@ -24,7 +24,6 @@ var UserSchema = new Schema({
   }, 
   Created_date: {
     type: Date,
-    // default: Date.now
   }
 });
 
@@ -50,3 +49,4 @@ var appointmentSchema=new Schema({
 
 })
 module.exports = mongoose.model('appointment',appointmentSchema);
+
