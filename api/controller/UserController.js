@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
 UserData = mongoose.model('UserInfo');
 var bcrypt = require('bcryptjs');
 var fs = require("fs");
+jwt=require('jsonwebtoken');
 UserAppointment =mongoose.model('appointment');
 
 //get all users
@@ -64,20 +65,45 @@ exports.userSignup = function(req, res){
   }
 };
 
-exports.userSignin = function(req,res){
-  console.log("hi signin")
-  UserData.find({Email: req.body.Email}, function(err, data){
-    if(data!= null && data != ''){
-      // if(err){
-      res.send("User succesfully signIn");
-      // res.json(data);
-    // }
-  } 
-    else{
-      res.send("User does not exists");
-    }
+exports.userSignin = (req,res,next) =>{
+  const Email = req.body.Email;
+  const Password = req.body.Password;
+  let loadedUser;
+  UserData.findOne({Email: Email})
+  .then(user =>{
+  if(!user){
+  const error = new Error('A user with this email could not be found.');
+  error.statusCode = 401;
+  throw error;
+  }
+  loadedUser = user;
+  return bcrypt.compare(Password,user.Password);
+  })
+  .then(isEqual =>{
+  if(!isEqual){
+  const error = new Error('wrong password.');
+  error.statusCode = 401;
+  throw error;
+  }
+  const token = jwt.sign(
+  {
+  email: loadedUser.email,
+  userId:loadedUser._id.toString()
+  },
+  'secret',
+  )
+  res.status(200).json({token: token, userId: loadedUser._id.toString()})
+  })
+  
+  .catch(err => {
+  if (!err.statusCode) {
+  err.statusCode = 500;
+  }
+  next(err);
+  
   });
-};
+  
+  }
 
 exports.updateUser = function(req, res) {
   UserData.findOneAndUpdate({_id: req.body.userId}, 
@@ -109,24 +135,8 @@ exports.getAllAppointment = function(req, res) {
    });
  };
 
- exports.getAllAppointmentedit=function(req,res){
-   console.log("edit")
-   var userAppointment = new UserAppointment(req.body);
-   userAppointment.find(req.body,function(err,data){
-      if(err) 
-      // throw error;
-      // res.send(JSON.stringify(results));
-      res.send(err);
-     res.json(data);
-   });
-  };
 
-//  router.get('/edit', function(req, res, next) {
-//   res.locals.connection.query('update members set name = ''+req.body.name+'', email = ''+req.body.email+'' where id = ''+req.body.id+''', function (error, results, fields) {
-//       if(error) throw error;
-//       res.send(JSON.stringify(results));
-//   });
-// });
+
 
 
 

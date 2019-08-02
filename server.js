@@ -1,5 +1,4 @@
-var express = require('express')
-// var cookieParser = require('cookie-parser');
+var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var cors = require('cors');
@@ -18,7 +17,7 @@ app.use(function(req, res, next) {
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/tax-financial');
 
-UserData = require('./api/models/userModel'); 
+UserData = require('./api/models/userModel');
 
 
 var routes = require('./api/routes/UserRoutes'); 
@@ -29,4 +28,3 @@ app.set('port', (process.env.PORT || 8000));
 app.listen(app.get('port'), function(){
 console.log('Server started on port ' + app.get('port'));
 });
-

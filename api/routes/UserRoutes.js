@@ -1,5 +1,5 @@
 module.exports = function(app) {
-	var userData = require('../controller/UserController');
+var userData = require('../controller/UserController');
 
 // Signup 
  app.route('/signup')
@@ -15,15 +15,10 @@ module.exports = function(app) {
 
  //Sign
  app.route('/signin')
- .post(userData.userSignin)
-
-
-
+ .post(userData.userSignin);
 
 app.route('/appt')
 .post(userData.Appointments)
 .get(userData.getAllAppointment)
 
-app.route('/edit')
-.post(userData.getAllAppointmentedit)
 };
