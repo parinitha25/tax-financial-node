@@ -1,13 +1,16 @@
 module.exports = function(app) {
 var userData = require('../controller/UserController');
+var isauth=require('../Midleware/isAuth');
 
 // Signup 
  app.route('/signup')
  .post(userData.userSignup);
 
+
  //user detail
  app.route('/getUser/:emailId')
  .get(userData.getUser);
+
 
  //update 
  app.route('/updateUser')
@@ -15,10 +18,13 @@ var userData = require('../controller/UserController');
 
  //Sign
  app.route('/signin')
- .post(userData.userSignin);
+ .post(userData.userSignin)
+ .get(isauth,userData.getAllSignin)
 
 app.route('/appt')
 .post(userData.Appointments)
-.get(userData.getAllAppointment)
+.get(isauth,userData.getAllAppointment)
 
-};
+
+}
+

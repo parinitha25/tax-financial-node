@@ -1,9 +1,10 @@
-var mongoose = require('mongoose'),
+var mongoose = require('mongoose');
 UserData = mongoose.model('UserInfo');
 var bcrypt = require('bcryptjs');
 var fs = require("fs");
 jwt=require('jsonwebtoken');
 UserAppointment =mongoose.model('appointment');
+var isAuth=require('../Midleware/isAuth');
 
 //get all users
 exports.getAllUsers = function(req, res) {
@@ -22,7 +23,7 @@ exports.getUser = function(req, res){
   UserData.find({email: req.params.emailId},
     function(err, data){
       if (err)
-        res.send(err);
+      res.send(err);
       res.json(data);
       console.log(data);
     });
@@ -66,6 +67,7 @@ exports.userSignup = function(req, res){
 };
 
 exports.userSignin = (req,res,next) =>{
+  console.log(req.body);
   const Email = req.body.Email;
   const Password = req.body.Password;
   let loadedUser;
@@ -102,8 +104,17 @@ exports.userSignin = (req,res,next) =>{
   next(err);
   
   });
-  
   }
+  exports.getAllSignin = (isAuth,function(req, res) {
+    console.log("hello")
+     UserData.find({userId:req.decodedToken}, function(err, data) {
+       if (err)
+         res.send(err);
+       res.json(data); 
+     });
+   });
+   
+    
 
 exports.updateUser = function(req, res) {
   UserData.findOneAndUpdate({_id: req.body.userId}, 
@@ -125,15 +136,15 @@ exports.Appointments = function(req, res){
  })
 }
 
-exports.getAllAppointment = function(req, res) {
+exports.getAllAppointment = (isAuth,function(req, res) {
   console.log("hello")
-  UserAppointment.find( function(err, data) {
+  UserAppointment.find({userId:req.decodedToken}, function(err, data) {
      if (err)
        res.send(err);
      res.json(data);
     
    });
- };
+ });
 
 
 
