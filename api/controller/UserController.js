@@ -17,7 +17,6 @@ exports.getAllUsers = function(req, res) {
   });
 };
 
-
 exports.getUser = function(req, res){
   console.log(req.params.emailId);    
   UserData.find({email: req.params.emailId},
@@ -28,7 +27,6 @@ exports.getUser = function(req, res){
       console.log(data);
     });
 };
-
 
 exports.userSignup = function(req, res){
   console.log("hi signup")
