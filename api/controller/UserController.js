@@ -77,32 +77,21 @@ exports.userSignin = (req,res,next) =>{
   throw error;
   }
   loadedUser = user;
-  return bcrypt.compare(Password,user.Password);
-  })
-  .then(isEqual =>{
-  if(!isEqual){
-  const error = new Error('wrong password.');
-  error.statusCode = 401;
-  throw error;
-  }
-  const token = jwt.sign(
-  {
-  email: loadedUser.email,
-  userId:loadedUser._id.toString()
-  },
-  'secret',
-  )
-  res.status(200).json({token: token, userId: loadedUser._id.toString()})
-  })
-  
-  .catch(err => {
+ const token = jwt.sign(
+ {
+ email: loadedUser.email,
+ userId:loadedUser._id.toString()
+ },'secret')
+ return res.status(200).json({token: token, userId: loadedUser._id.toString(), email: loadedUser.email})
+}) 
+.catch(err => {
   if (!err.statusCode) {
   err.statusCode = 500;
   }
   next(err);
   
   });
-  }
+}
   exports.getAllSignin = (isAuth,function(req, res) {
     console.log("hello")
      UserData.find({userId:req.decodedToken}, function(err, data) {
@@ -112,8 +101,6 @@ exports.userSignin = (req,res,next) =>{
      });
    });
    
-    
-
 exports.updateUser = function(req, res) {
   UserData.findOneAndUpdate({_id: req.body.userId}, 
     req.body, {new: true}, function(err, data) {
@@ -154,3 +141,4 @@ exports.getAllAppointment = (isAuth,function(req, res) {
 
 
 
+ 
