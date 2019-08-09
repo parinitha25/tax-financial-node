@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 UserData = mongoose.model('UserInfo');
 var bcrypt = require('bcryptjs');
 var fs = require("fs");
-jwt=require('jsonwebtoken');
-UserAppointment =mongoose.model('appointment');
+var jwt=require('jsonwebtoken');
+// UserAppointment =mongoose.model('appointment');
 var isAuth=require('../Midleware/isAuth');
 
 //get all users
@@ -111,25 +111,25 @@ exports.updateUser = function(req, res) {
 };
 
 
-exports.Appointments = function(req, res){
- console.log("hi signup")
- var userAppointment = new UserAppointment(req.body);
- userAppointment.save(function(err, data){
-    if(err)
-      res.send(err.message);
-      res.json(data);
- })
-}
+// exports.Appointments = function(req, res){
+//  console.log("hi signup")
+//  var userAppointment = new UserAppointment(req.body);
+//  userAppointment.save(function(err, data){
+//     if(err)
+//       res.send(err.message);
+//       res.json(data);
+//  })
+// }
 
-exports.getAllAppointment = (isAuth,function(req, res) {
-  console.log("hello")
-  UserAppointment.find({userId:req.decodedToken}, function(err, data) {
-     if (err)
-       res.send(err);
-     res.json(data);
+// exports.getAllAppointment = (isAuth,function(req, res) {
+//   console.log("hello")
+//   UserAppointment.find({userId:req.decodedToken}, function(err, data) {
+//      if (err)
+//        res.send(err);
+//      res.json(data);
     
-   });
- });
+//    });
+//  });
 
 
 
