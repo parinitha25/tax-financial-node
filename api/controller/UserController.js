@@ -65,12 +65,13 @@ exports.userSignup = function(req, res){
 };
 
 exports.userSignin = (req,res,next) =>{
-  console.log(req.body);
-  const Email = req.body.Email;
-  const Password = req.body.Password;
+  // console.log(user);
+  const email = req.body.email;
+  const password = req.body.password;
   let loadedUser;
-  UserData.findOne({Email: Email})
+  UserData.findOne({Email: email})
   .then(user =>{
+    console.log(user);
   if(!user){
   const error = new Error('A user with this email could not be found.');
   error.statusCode = 401;
@@ -93,7 +94,7 @@ exports.userSignin = (req,res,next) =>{
   });
 }
   exports.getAllSignin = (isAuth,function(req, res) {
-    console.log("hello")
+    console.log("hello  signin")
      UserData.find({userId:req.decodedToken}, function(err, data) {
        if (err)
          res.send(err);
