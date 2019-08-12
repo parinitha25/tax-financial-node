@@ -4,6 +4,7 @@ var bcrypt = require('bcryptjs');
 var fs = require("fs");
 var jwt=require('jsonwebtoken');
 UserAppointment =mongoose.model('appointment');
+UserContact=mongoose.model('contact')
 var isAuth=require('../Midleware/isAuth');
 
 //get all users
@@ -145,15 +146,48 @@ exports.getAllAppointment = (function(req, res) {
    });
  });
 
- exports.getAllSchedule = (function(req, res) {
-  console.log("hello appointment")
-  UserAppointment.find( function(err, data) {
-     if (err)
-       res.send(err);
-     res.json(data);
-    
-   });
- });
+ exports.getAllContact = function(req,res){ 
+
+  const reg_email=/^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/;
+  
+  if(reg_email.test(req.body.email)){
+    var Contact = new contact(req.body);
+
+    Contact.save(function(err, data){
+      if(err)
+        res.send(err.message);
+      res.json(data);
+      var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: {
+          user: 'parinithacn@gmail.com',
+          pass: 'pari@253'
+        }
+      });
+      var mailOptions = {
+       
+        from: 'parinithacn@gmail.com',
+        to: data.email,
+        subject: 'Acknowledge for getting appointment',
+        text: `Hii your appointment with Tax expert compnay is confirmed`      
+      };
+      console.log(data)
+      transporter.sendMail(mailOptions, (error, info)=>{
+        if (error) {
+          return console.log(error.message);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+    })
+  }
+  else {
+    res.send('Email is invalid');
+  }
+};
 
 
 

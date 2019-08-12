@@ -51,3 +51,16 @@ var appointmentSchema=new Schema({
 })
 module.exports = mongoose.model('appointment',appointmentSchema);
 
+var contactSchema =new Schema({
+  cname: {
+    type:String
+  },
+  cemail: {
+    type:String
+  },
+  
+  message:{
+    type:String
+  }
+})
+module.exports = mongoose.model('contact',contactSchema)
