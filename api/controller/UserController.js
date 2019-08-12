@@ -3,7 +3,7 @@ UserData = mongoose.model('UserInfo');
 var bcrypt = require('bcryptjs');
 var fs = require("fs");
 var jwt=require('jsonwebtoken');
-// UserAppointment =mongoose.model('appointment');
+UserAppointment =mongoose.model('appointment');
 var isAuth=require('../Midleware/isAuth');
 
 //get all users
@@ -65,34 +65,46 @@ exports.userSignup = function(req, res){
 };
 
 exports.userSignin = (req,res,next) =>{
-  // console.log(user);
   const email = req.body.email;
   const password = req.body.password;
   let loadedUser;
   UserData.findOne({Email: email})
   .then(user =>{
     console.log(user);
-  if(!user){
-  const error = new Error('A user with this email could not be found.');
-  error.statusCode = 401;
-  throw error;
-  }
-  loadedUser = user;
- const token = jwt.sign(
- {
- email: loadedUser.email,
- userId:loadedUser._id.toString()
- },'secret')
- return res.status(200).json({token: token, userId: loadedUser._id.toString(), email: loadedUser.email})
-}) 
-.catch(err => {
-  if (!err.statusCode) {
-  err.statusCode = 500;
-  }
-  next(err);
-  
-  });
+    if(!user){
+      const error = new Error('A user with this email could not be found.');
+      error.statusCode = 401;
+      throw error;
+    }
+    loadedUser = user;
+    const token = jwt.sign(
+      {
+        email: loadedUser.email,
+        userId:loadedUser._id.toString()
+      },'secret')
+      return res.status(200).json({token: token, userId: loadedUser._id.toString(), email: loadedUser.email})
+      // res.json({
+        // success: true,
+        // token: token
+    // });
+    // })
+    // return bcrypt.compare(password,user.password);
+  })
+  // .then(isEqual =>{
+    // if(!isEqual){
+    //   const error = new Error('wrong password.');
+    //   error.statusCode = 401;
+    //   throw error;
+    // }
+
+  .catch(err => {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }); 
 }
+
   exports.getAllSignin = (isAuth,function(req, res) {
     console.log("hello  signin")
      UserData.find({userId:req.decodedToken}, function(err, data) {
@@ -112,26 +124,36 @@ exports.updateUser = function(req, res) {
 };
 
 
-// exports.Appointments = function(req, res){
-//  console.log("hi signup")
-//  var userAppointment = new UserAppointment(req.body);
-//  userAppointment.save(function(err, data){
-//     if(err)
-//       res.send(err.message);
-//       res.json(data);
-//  })
-// }
+exports.Appointments = function(req, res){
 
-// exports.getAllAppointment = (isAuth,function(req, res) {
-//   console.log("hello")
-//   UserAppointment.find({userId:req.decodedToken}, function(err, data) {
-//      if (err)
-//        res.send(err);
-//      res.json(data);
+ var userAppointment = new UserAppointment(req.body);
+ console.log(req.body)
+ userAppointment.save(function(err, data){
+    if(err)
+      res.send(err.message);
+      res.json(data);
+ })
+}
+
+exports.getAllAppointment = (function(req, res) {
+  console.log("hello appointment")
+  UserAppointment.find( function(err, data) {
+     if (err)
+       res.send(err);
+     res.json(data);
     
-//    });
-//  });
+   });
+ });
 
+ exports.getAllSchedule = (function(req, res) {
+  console.log("hello appointment")
+  UserAppointment.find( function(err, data) {
+     if (err)
+       res.send(err);
+     res.json(data);
+    
+   });
+ });
 
 
 
