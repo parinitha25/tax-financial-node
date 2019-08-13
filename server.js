@@ -25,7 +25,6 @@ UserData = require('./api/models/userModel');
 var routes = require('./api/routes/UserRoutes'); 
 routes(app);
 
-
 app.set('port', (process.env.PORT || 8000));
 app.use(cors());
 app.listen(app.get('port'), function(){

@@ -32,21 +32,22 @@ module.exports = mongoose.model('UserInfo', UserSchema);
 
 var appointmentSchema=new Schema({
   name:{
-      type:String,
-      required: 'name required'
+    type:String,
+    required: 'name required'
   },
   email:{
-      type:String,
-      required: 'email required'
+    type:String,
+    required: 'email required'
   },
   date:{
-      type:Date,
-      required: 'date required'
+    type:Date,
+    required: 'date required'
   },
   time:{
-      type:String,
-      required: 'time required'
+    type:String,
+    required: 'time required'
   }
+  
 
 })
 module.exports = mongoose.model('appointment',appointmentSchema);
@@ -58,8 +59,10 @@ var contactSchema =new Schema({
   cemail: {
     type:String
   },
-  
   message:{
+    type:String
+  },
+  confirmm:{
     type:String
   }
 })

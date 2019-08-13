@@ -23,12 +23,12 @@ var isauth=require('../Midleware/isAuth');
  .post(userData.userSignin)
  .get(isauth,userData.getAllSignin)
 
-app.route('/appt')
-.post(UserAppointment.Appointments)
-.get(UserAppointment.getAllAppointment)
+ app.route('/appt')
+ .post(UserAppointment.Appointments)
+ .get(UserAppointment.getAllAppointment)
 
-app.route('/cont')
-.post(UserContact.getAllContact)
+ app.route('/contact')
+ .post(UserContact.getAllContact)
 
 }
 

@@ -6,6 +6,7 @@ var jwt=require('jsonwebtoken');
 UserAppointment =mongoose.model('appointment');
 UserContact=mongoose.model('contact')
 var isAuth=require('../Midleware/isAuth');
+var nodemailer = require ('nodemailer');
 
 //get all users
 exports.getAllUsers = function(req, res) {
@@ -66,114 +67,127 @@ exports.userSignup = function(req, res){
 };
 
 exports.userSignin = (req,res,next) =>{
-  const email = req.body.email;
-  const password = req.body.password;
-  let loadedUser;
-  UserData.findOne({Email: email})
-  .then(user =>{
-    console.log(user);
-    if(!user){
-      const error = new Error('A user with this email could not be found.');
-      error.statusCode = 401;
-      throw error;
-    }
-    loadedUser = user;
-    const token = jwt.sign(
+    const email = req.body.email;
+    const password = req.body.password;
+    let loadedUser;
+    UserData.findOne({Email: email})
+    .then(user =>{
+      console.log(user);
+      if(!user){
+        const error = new Error('A user with this email could not be found.');
+        error.statusCode = 401;
+        throw error;
+      }
+      loadedUser = user;
+      const token = jwt.sign(
       {
         email: loadedUser.email,
         userId:loadedUser._id.toString()
       },'secret')
       return res.status(200).json({token: token, userId: loadedUser._id.toString(), email: loadedUser.email})
-      // res.json({
-        // success: true,
-        // token: token
-    // });
-    // })
-    // return bcrypt.compare(password,user.password);
-  })
-  // .then(isEqual =>{
-    // if(!isEqual){
-    //   const error = new Error('wrong password.');
-    //   error.statusCode = 401;
-    //   throw error;
-    // }
-
-  .catch(err => {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  }); 
+    })
+    .catch(err => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      } 
+        next(err);
+    }); 
 }
 
   exports.getAllSignin = (isAuth,function(req, res) {
-    console.log("hello  signin")
-     UserData.find({userId:req.decodedToken}, function(err, data) {
+      console.log("hello  signin")
+      UserData.find({userId:req.decodedToken}, function(err, data) {
        if (err)
          res.send(err);
-       res.json(data); 
-     });
-   });
+         res.json(data); 
+      });
+  });
    
 exports.updateUser = function(req, res) {
   UserData.findOneAndUpdate({_id: req.body.userId}, 
     req.body, {new: true}, function(err, data) {
       if (err)
         res.send(err);
-      res.json(data);
-    });
+        res.json(data);
+  });
 };
 
 
 exports.Appointments = function(req, res){
-
- var userAppointment = new UserAppointment(req.body);
- console.log(req.body)
- userAppointment.save(function(err, data){
-    if(err)
-      res.send(err.message);
-      res.json(data);
- })
-}
-
-exports.getAllAppointment = (function(req, res) {
-  console.log("hello appointment")
-  UserAppointment.find( function(err, data) {
-     if (err)
-       res.send(err);
-     res.json(data);
-    
-   });
- });
-
- exports.getAllContact = function(req,res){ 
-
-  const reg_email=/^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/;
-  
+const reg_email=/^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/;
   if(reg_email.test(req.body.email)){
-    var Contact = new contact(req.body);
-
-    Contact.save(function(err, data){
+    var userAppointment = new UserAppointment(req.body);
+    console.log("appointment is confirm");
+    userAppointment.save(function(err, data){
       if(err)
         res.send(err.message);
-      res.json(data);
+        res.json(data);
       var transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
         secure: false,
         requireTLS: true,
         auth: {
-          user: 'parinithacn@gmail.com',
+          user: 'parinithajyothi@gmail.com',
           pass: 'pari@253'
         }
       });
       var mailOptions = {
-       
-        from: 'parinithacn@gmail.com',
+        from: 'parinithajyothi@gmail.com',
         to: data.email,
         subject: 'Acknowledge for getting appointment',
-        text: `Hii your appointment with Tax expert compnay is confirmed`      
+        text: `Hii your appointment with Tax expert compnay is confirmed`+data.date,      
       };
+      console.log(data)
+      transporter.sendMail(mailOptions, (error, info)=>{
+        if (error) {
+          return console.log(error.message);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+    })
+  }
+  else {
+    res.send('Email is invalid');
+  }
+};
+
+
+exports.getAllAppointment = (function(req, res) {
+  console.log("appointment")
+  UserAppointment.find( function(err, data) {
+    if (err)
+      res.send(err);
+      res.json(data); 
+  });
+});
+
+ exports.getAllContact = function(req,res){ 
+  const reg_email=/^[a-zA-Z0-9]+@+[a-zA-Z0-9]+.+[A-z]/;
+  if(reg_email.test(req.body.cemail)){
+    var Contact = new UserContact(req.body);
+    console.log("appointment confirm");
+    Contact.save(function(err, data){
+      if(err)
+        res.send(err.message);
+        res.json(data);
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: {
+          user: 'parinithajyothi@gmail.com',
+          pass: 'pari@253'
+        }
+    });
+    var mailOptions = {
+        from: 'parinithajyothi@gmail.com',
+        to: data.cemail,
+        subject: 'Acknowledge for getting appointment',
+        text: `Hii your appointment with Tax expert compnay is confirmed`      
+    };
       console.log(data)
       transporter.sendMail(mailOptions, (error, info)=>{
         if (error) {
