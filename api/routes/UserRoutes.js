@@ -35,6 +35,11 @@ var isauth=require('../Midleware/isAuth');
  app.route('/delete/:id')
  .delete(UserAppointment.delete)
 
+
+
+ app.route('/update/:id')
+ .put(UserAppointment.update)
+
  app.route('/contact')
  .post(UserContact.getAllContact)
 

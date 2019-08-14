@@ -215,14 +215,6 @@ exports.createProduct = function(req, res) {
   });
   };
 
-// businessRoutes.route('/delete/:id').get(function (req, res) {
-//   exports.Schedules = function(req,res){ 
-//     console.log("delete");
-//     UserSchedule.Remove({_id: req.params.id}, function(err, business){
-//       if(err) res.json(err);
-//       else res.json('Successfully removed');
-//   });
-// };
 exports.delete=(req, res)=> {
   console.log("hiiii")
   debugger;
@@ -232,6 +224,13 @@ exports.delete=(req, res)=> {
   })
 }
 
+exports.update=(req, res)=>{
+  console.log("update")
+  UserAppointment.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (error, data) => {
+      if (error) { res.json(error) }
+      res.json(data)
+  })
+}
 
 
 
