@@ -2,6 +2,7 @@ module.exports = function(app) {
 var userData = require('../controller/UserController');
 var UserAppointment=require('../controller/UserController');
 var UserContact=require('../controller/UserController');
+var UserSchedule=require('../controller/UserController');
 var isauth=require('../Midleware/isAuth');
 
 // Signup 
@@ -26,6 +27,13 @@ var isauth=require('../Midleware/isAuth');
  app.route('/appt')
  .post(UserAppointment.Appointments)
  .get(UserAppointment.getAllAppointment)
+
+
+ app.route('/sch')
+ .post(UserSchedule.createProduct)
+
+ app.route('/delete/:id')
+ .delete(UserAppointment.delete)
 
  app.route('/contact')
  .post(UserContact.getAllContact)

@@ -4,7 +4,8 @@ var bcrypt = require('bcryptjs');
 var fs = require("fs");
 var jwt=require('jsonwebtoken');
 UserAppointment =mongoose.model('appointment');
-UserContact=mongoose.model('contact')
+UserContact=mongoose.model('contact');
+UserSchedule=mongoose.model('schedule');
 var isAuth=require('../Midleware/isAuth');
 var nodemailer = require ('nodemailer');
 
@@ -204,6 +205,32 @@ exports.getAllAppointment = (function(req, res) {
 };
 
 
+exports.createProduct = function(req, res) {
+  var schedule_date = new UserSchedule(req.body);
+  console.log("deletes");
+  schedule_date.save(function(err, data) {
+  if (err)
+  res.send(err);
+  res.json(data);
+  });
+  };
+
+// businessRoutes.route('/delete/:id').get(function (req, res) {
+//   exports.Schedules = function(req,res){ 
+//     console.log("delete");
+//     UserSchedule.Remove({_id: req.params.id}, function(err, business){
+//       if(err) res.json(err);
+//       else res.json('Successfully removed');
+//   });
+// };
+exports.delete=(req, res)=> {
+  console.log("hiiii")
+  debugger;
+  UserAppointment.remove({ _id: req.params.id }, (error, data) => {
+      if (error) { res.json(error) }
+      res.json(data)
+  })
+}
 
 
 

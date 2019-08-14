@@ -67,3 +67,19 @@ var contactSchema =new Schema({
   }
 })
 module.exports = mongoose.model('contact',contactSchema)
+
+var scheduleSchema =new Schema({
+  sname: {
+    type:String
+  },
+  semail: {
+    type:String
+  },
+  date:{
+    type:String
+  },
+  time:{
+    type:String
+  },
+})
+module.exports = mongoose.model('schedule',scheduleSchema)
